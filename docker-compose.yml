@@ -1,0 +1,13 @@
+services:
+  e2e:
+    build: .
+    init: true
+    shm_size: 1gb
+    environment:
+      CI: "1"
+      E2E_BASE_URL: ${E2E_BASE_URL:-https://flowresolvy.onrender.com}
+      E2E_TEST_EMAIL: ${E2E_TEST_EMAIL:-}
+      E2E_TEST_PASSWORD: ${E2E_TEST_PASSWORD:-}
+    volumes:
+      - ./playwright-report:/app/playwright-report
+      - ./test-results:/app/test-results
