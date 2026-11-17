@@ -1,10 +1,9 @@
 # Cenários E2E
 
-Os cenários ficam organizados por fluxo em `*.spec.ts`: acesso público, login,
-cadastro, proteção de rotas, dashboard, chamados, relatórios, configurações e
-fluxos completos. Os cenários de recuperação de senha estão temporariamente
-ignorados até a funcionalidade estar disponível. Os Page Objects reutilizáveis
-ficam em `pages/`.
+Os testes executáveis ficam em `e2e/`, agrupados por área (`public`, `auth`,
+`app` e `workflows`). Page Objects e helpers compartilhados ficam em
+`support/pages/` e `support/helpers/`. A recuperação de senha permanece
+temporariamente ignorada até a funcionalidade estar disponível.
 
 Comandos:
 
@@ -34,12 +33,6 @@ secrets para incluir os cenários autenticados.
 Para executar os cenários que exigem autenticação, configure uma conta de teste
 pela sessão do PowerShell antes de rodar os testes:
 
-```powershell
-$env:E2E_TEST_EMAIL = "email-da-conta-de-teste"
-$env:E2E_TEST_PASSWORD = "senha-da-conta-de-teste"
-npm run test:chromium
-```
-
 As mesmas variáveis são repassadas para o container pelo Docker Compose.
 `E2E_BASE_URL` também pode ser definido para apontar para outra instância da
 aplicação.
@@ -47,3 +40,7 @@ aplicação.
 Sem essas variáveis, os cenários autenticados são ignorados; os cenários
 anonimizados continuam disponíveis. Não salve credenciais de teste nos arquivos
 do projeto.
+
+O cenário de cadastro gera dados únicos e cria uma empresa no `E2E_BASE_URL` a
+cada execução. A empresa não é removida automaticamente; no endereço padrão,
+isso grava dados na aplicação publicada.

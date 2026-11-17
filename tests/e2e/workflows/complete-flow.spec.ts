@@ -6,7 +6,7 @@ import {
   login,
   productionMutationDisabled,
   testCredentials,
-} from './helpers/auth';
+} from '../../support/helpers/auth';
 
 test.describe('Fluxo Completo E2E', () => {
   test('deve completar o fluxo: Register → Login → Dashboard → Criar Ticket → Ver Tickets → Logout', async ({ page }) => {

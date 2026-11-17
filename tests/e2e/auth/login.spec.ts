@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
-import { LoginPage } from './pages/login.page';
-import { credentialsRequired, hasTestCredentials, testCredentials } from './helpers/auth';
+import { LoginPage } from '../../support/pages/login.page';
+import { credentialsRequired, hasTestCredentials, testCredentials } from '../../support/helpers/auth';
 
 test.describe('Página de Login', () => {
   let loginPage: LoginPage;
@@ -43,7 +43,7 @@ test.describe('Página de Login', () => {
     test('deve exibir erro com credenciais inválidas', async ({ page }) => {
       await loginPage.login('invalido@email.com', 'senhaerrada');
 
-      await expect(loginPage.getByText(/E-mail ou senha inválidos/i)).toBeVisible({ timeout: 10000 });
+      await expect(page.getByText(/E-mail ou senha inválidos/i)).toBeVisible({ timeout: 10000 });
     });
 
     test('deve fazer login com sucesso usando credenciais válidas', async ({ page }) => {

@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { credentialsRequired, hasTestCredentials, login } from './helpers/auth';
+import { credentialsRequired, hasTestCredentials, login } from '../../support/helpers/auth';
 
 test.describe('Dashboard', () => {
   test.skip(!hasTestCredentials, credentialsRequired);

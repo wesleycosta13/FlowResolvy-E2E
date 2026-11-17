@@ -1,6 +1,5 @@
 import { type Locator, type Page } from '@playwright/test';
 import { BasePage } from './base.page';
-import { login } from '../helpers/auth';
 
 export class LoginPage extends BasePage {
   constructor(page: Page) {
@@ -37,7 +36,4 @@ export class LoginPage extends BasePage {
     await this.submitButton.click();
   }
 
-  async loginAsAdmin(): Promise<void> {
-    await login(this.page);
-  }
 }

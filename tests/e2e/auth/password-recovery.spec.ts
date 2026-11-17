@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test.describe.skip('Página de Recuperação de Senha (aguardando implementação)', () => {
+test.describe.skip('Recuperação de senha (aguardando implementação)', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/forgot-password');
   });

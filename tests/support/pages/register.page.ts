@@ -42,20 +42,25 @@ export class RegisterPage extends BasePage {
     return this.page.getByRole('link', { name: 'Entrar', exact: true });
   }
 
-  async openRegister(): Promise<void> {
-    await this.open('/register');
-  }
-
   async fillRegistration(
     companyName: string,
     ownerName: string,
+    cpfCnpj: string,
+    phone: string,
     email: string,
     password: string,
   ): Promise<void> {
     await this.companyNameInput.fill(companyName);
     await this.ownerNameInput.fill(ownerName);
+    await this.cpfCnpjInput.fill(cpfCnpj);
+    await this.phoneInput.fill(phone);
     await this.emailInput.fill(email);
     await this.passwordInputs.nth(0).fill(password);
     await this.passwordInputs.nth(1).fill(password);
   }
+
+  async openRegister(): Promise<void> {
+    await this.open('/register');
+  }
+
 }

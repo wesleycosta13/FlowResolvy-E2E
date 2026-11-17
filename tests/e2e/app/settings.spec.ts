@@ -4,7 +4,7 @@ import {
   hasTestCredentials,
   login,
   testCredentials,
-} from './helpers/auth';
+} from '../../support/helpers/auth';
 
 test.describe('Página de Configurações', () => {
   test.skip(!hasTestCredentials, credentialsRequired);

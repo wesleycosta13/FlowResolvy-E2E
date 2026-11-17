@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Proteção de Rotas (Auth Guard)', () => {
+test.describe('Proteção de rotas', () => {
   test('deve redirecionar /dashboard para /login quando não autenticado', async ({ page }) => {
     await page.goto('/dashboard');
     await expect(page).toHaveURL(/\/login/, { timeout: 10000 });

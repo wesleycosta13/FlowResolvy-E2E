@@ -1,8 +1,26 @@
 import { test, expect } from '@playwright/test';
-import { RegisterPage } from './pages/register.page';
-import { isProductionE2E, productionMutationDisabled } from './helpers/auth';
+import { RegisterPage } from '../../support/pages/register.page';
 
-test.describe('Página de Registro', () => {
+function createCnpj(timestamp: number): string {
+  const base = String(timestamp).slice(-12).padStart(12, '0');
+  const checkDigit = (digits: string, weights: number[]): number => {
+    const sum = [...digits].reduce(
+      (total, digit, index) => total + Number(digit) * weights[index],
+      0,
+    );
+    const remainder = sum % 11;
+    return remainder < 2 ? 0 : 11 - remainder;
+  };
+  const firstDigit = checkDigit(base, [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]);
+  const secondDigit = checkDigit(
+    `${base}${firstDigit}`,
+    [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2],
+  );
+
+  return `${base}${firstDigit}${secondDigit}`;
+}
+
+test.describe('Cadastro de empresa', () => {
   let registerPage: RegisterPage;
 
   test.beforeEach(async ({ page }) => {
@@ -36,7 +54,7 @@ test.describe('Página de Registro', () => {
   });
 
   test('deve exibir link para login', async ({ page }) => {
-    await expect(registerPage.getByText(/Já tem uma conta/i)).toBeVisible();
+    await expect(page.getByText(/Já tem uma conta/i)).toBeVisible();
     await expect(registerPage.loginLink).toBeVisible();
   });
 
@@ -55,20 +73,20 @@ test.describe('Página de Registro', () => {
       expect(companyNameIsRequired).toBe(true);
     });
 
-    test('deve registrar com sucesso e redirecionar para /login', async ({ page }) => {
-      test.skip(isProductionE2E, productionMutationDisabled);
+    test('deve registrar com sucesso e redirecionar para o dashboard', async ({ page }) => {
       const timestamp = Date.now();
-      
+
       await registerPage.fillRegistration(
         `Empresa E2E ${timestamp}`,
         `Teste E2E ${timestamp}`,
+        createCnpj(timestamp),
+        `11${9}${String(timestamp).slice(-8)}`,
         `teste${timestamp}@example.invalid`,
         'SenhaForte123!',
       );
       await registerPage.createAccountButton.click();
 
-      // Deve redirecionar para login após registro bem-sucedido
-      await expect(page).toHaveURL(/\/login/, { timeout: 10000 });
+      await expect(page).toHaveURL(/\/dashboard/, { timeout: 10000 });
     });
 
   });
