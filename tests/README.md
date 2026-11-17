@@ -1,8 +1,9 @@
 # Cenários E2E
 
-Os cenários ficam organizados por fluxo em `*.spec.ts`: landing page, login,
-cadastro, recuperação de senha, proteção de rotas, dashboard, chamados,
-relatórios, configurações e fluxos completos. Os Page Objects reutilizáveis
+Os cenários ficam organizados por fluxo em `*.spec.ts`: acesso público, login,
+cadastro, proteção de rotas, dashboard, chamados, relatórios, configurações e
+fluxos completos. Os cenários de recuperação de senha estão temporariamente
+ignorados até a funcionalidade estar disponível. Os Page Objects reutilizáveis
 ficam em `pages/`.
 
 Comandos:
@@ -24,6 +25,11 @@ O comando padrão executa Chromium. Para executar os três navegadores:
 ```powershell
 docker compose run --rm e2e npm test
 ```
+
+O workflow do GitHub Actions fica em `.github/workflows/e2e.yml` e roda em
+pushes para `main`, pull requests e execução manual. Configure `E2E_BASE_URL`
+como variável do repositório e `E2E_TEST_EMAIL` / `E2E_TEST_PASSWORD` como
+secrets para incluir os cenários autenticados.
 
 Para executar os cenários que exigem autenticação, configure uma conta de teste
 pela sessão do PowerShell antes de rodar os testes:

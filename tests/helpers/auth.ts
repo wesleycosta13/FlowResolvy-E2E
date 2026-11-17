@@ -8,6 +8,11 @@ export const testCredentials = {
 export const hasTestCredentials = Boolean(testCredentials.email && testCredentials.password);
 export const credentialsRequired =
   'Configure E2E_TEST_EMAIL e E2E_TEST_PASSWORD para executar os cenários autenticados.';
+export const isProductionE2E =
+  new URL(process.env.E2E_BASE_URL ?? 'https://flowresolvy.onrender.com').hostname ===
+  'flowresolvy.onrender.com';
+export const productionMutationDisabled =
+  'Este cenário altera dados; execute-o somente contra uma instância E2E isolada.';
 
 export async function login(page: Page): Promise<void> {
   if (!hasTestCredentials) {

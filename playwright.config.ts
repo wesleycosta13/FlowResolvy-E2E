@@ -13,7 +13,7 @@ export default defineConfig({
   },
   use: {
     baseURL: process.env.E2E_BASE_URL ?? 'https://flowresolvy.onrender.com',
-    trace: 'on-first-retry',
+    trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
   },

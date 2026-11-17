@@ -19,20 +19,8 @@ export class LoginPage extends BasePage {
     return this.page.locator('input[type="password"]');
   }
 
-  get rememberCheckbox(): Locator {
-    return this.page.locator('input[type="checkbox"]');
-  }
-
-  get forgotPasswordLink(): Locator {
-    return this.page.getByRole('link', { name: /Esqueceu a senha/i });
-  }
-
   get registerLink(): Locator {
-    return this.page.getByRole('link', { name: /Cadastre-se/i });
-  }
-
-  get homeLink(): Locator {
-    return this.page.getByRole('link', { name: /Voltar para o início/i });
+    return this.page.getByRole('link', { name: /Cadastrar minha empresa/i });
   }
 
   get submitButton(): Locator {

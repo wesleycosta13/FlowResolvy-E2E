@@ -1,9 +1,17 @@
 import { test, expect } from '@playwright/test';
-import { credentialsRequired, hasTestCredentials, login, testCredentials } from './helpers/auth';
+import {
+  credentialsRequired,
+  hasTestCredentials,
+  isProductionE2E,
+  login,
+  productionMutationDisabled,
+  testCredentials,
+} from './helpers/auth';
 
 test.describe('Fluxo Completo E2E', () => {
   test('deve completar o fluxo: Register → Login → Dashboard → Criar Ticket → Ver Tickets → Logout', async ({ page }) => {
     test.skip(!hasTestCredentials, credentialsRequired);
+    test.skip(isProductionE2E, productionMutationDisabled);
 
     // ===== 1. REGISTRO =====
     await page.goto('/register');
@@ -11,15 +19,15 @@ test.describe('Fluxo Completo E2E', () => {
     const timestamp = Date.now();
     const testEmail = `e2eflow${timestamp}@example.invalid`;
     
-    await page.locator('input[placeholder*="nome" i]').fill(`Teste Fluxo ${timestamp}`);
+    await page.getByPlaceholder('Ex: Minha Empresa Ltda').fill(`Empresa E2E ${timestamp}`);
+    await page.getByPlaceholder('Ex: João Silva').fill(`Teste Fluxo ${timestamp}`);
     await page.locator('input[type="email"]').fill(testEmail);
     
     const passwordFields = page.locator('input[type="password"]');
     await passwordFields.nth(0).fill('FluxoE2E123!');
     await passwordFields.nth(1).fill('FluxoE2E123!');
-    
-    await page.locator('input[type="checkbox"]').check();
-    await page.getByRole('button', { name: /Criar Conta/i }).click();
+
+    await page.getByRole('button', { name: /Criar conta gratuita/i }).click();
     
     // Deve redirecionar para login
     await expect(page).toHaveURL(/\/login/, { timeout: 10000 });
@@ -92,27 +100,21 @@ test.describe('Fluxo Completo E2E', () => {
     await expect(page).toHaveURL(/\/login/, { timeout: 10000 });
   });
 
-  test('deve navegar entre todas as seções da landing page', async ({ page }) => {
+  test('deve navegar entre login e cadastro da empresa', async ({ page }) => {
     await page.goto('/');
-    
-    // Scroll para Recursos
-    await page.getByRole('link', { name: /Recursos/i }).first().click();
-    await expect(page.getByText('Gestão Inteligente')).toBeVisible();
-    
-    // Scroll para Planos
-    await page.getByRole('link', { name: /Planos/i }).first().click();
-    await expect(page.getByText('Básico')).toBeVisible();
-    
-    // Scroll para Contato
-    await page.getByRole('link', { name: /Contato/i }).first().click();
-    await expect(page.getByText('Enviar Mensagem')).toBeVisible();
-    
-    // Volta para o início
-    await page.getByRole('link', { name: /Início/i }).first().click();
-    await expect(page.getByText('Gerencie seus chamados')).toBeVisible();
+    await expect(page).toHaveURL(/\/login$/);
+    await page.getByRole('link', { name: 'Cadastrar minha empresa' }).click();
+    await expect(page).toHaveURL(/\/register$/);
+    await expect(page.getByRole('heading', { name: 'Cadastre sua empresa' })).toBeVisible();
+    await page.getByRole('link', { name: 'Entrar', exact: true }).click();
+    await expect(page).toHaveURL(/\/login$/);
   });
 
   test('fluxo de recuperação de senha', async ({ page }) => {
+    test.skip(true, 'Funcionalidade de recuperação de senha indisponível no momento.');
+
+    test.skip(true, 'Funcionalidade de recuperação de senha indisponível no momento.');
+
     // Login page
     await page.goto('/login');
     
