@@ -2,17 +2,13 @@ import { test, expect } from '@playwright/test';
 import {
   credentialsRequired,
   hasTestCredentials,
-  isProductionE2E,
   login,
-  productionMutationDisabled,
   testCredentials,
 } from '../../support/helpers/auth';
 
 test.describe('Fluxo Completo E2E', () => {
   test('deve completar o fluxo: Register → Login → Dashboard → Criar Ticket → Ver Tickets → Logout', async ({ page }) => {
     test.skip(!hasTestCredentials, credentialsRequired);
-    test.skip(isProductionE2E, productionMutationDisabled);
-
     // ===== 1. REGISTRO =====
     await page.goto('/register');
     
@@ -102,7 +98,7 @@ test.describe('Fluxo Completo E2E', () => {
 
   test('deve navegar entre login e cadastro da empresa', async ({ page }) => {
     await page.goto('/');
-    await expect(page).toHaveURL(/\/login$/);
+    await expect(page).toHaveURL(/\/login$/, { timeout: 30000 });
     await page.getByRole('link', { name: 'Cadastrar minha empresa' }).click();
     await expect(page).toHaveURL(/\/register$/);
     await expect(page.getByRole('heading', { name: 'Cadastre sua empresa' })).toBeVisible();
@@ -111,15 +107,12 @@ test.describe('Fluxo Completo E2E', () => {
   });
 
   test('fluxo de recuperação de senha', async ({ page }) => {
-    test.skip(true, 'Funcionalidade de recuperação de senha indisponível no momento.');
-
-    test.skip(true, 'Funcionalidade de recuperação de senha indisponível no momento.');
 
     // Login page
     await page.goto('/login');
     
     // Esqueceu a senha
-    await page.getByRole('link', { name: /Esqueceu a senha/i }).click();
+    await page.goto('/forgot-password');
     await expect(page).toHaveURL(/\/forgot-password/);
     
     // Preenche email

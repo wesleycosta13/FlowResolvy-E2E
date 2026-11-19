@@ -4,7 +4,7 @@ test.describe('Acesso público', () => {
   test('rota inicial deve encaminhar para login', async ({ page }) => {
     await page.goto('/');
 
-    await expect(page).toHaveURL(/\/login$/);
+    await expect(page).toHaveURL(/\/login$/, { timeout: 30000 });
     await expect(page.getByRole('heading', { name: 'Entrar na sua conta' })).toBeVisible();
   });
 

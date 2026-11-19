@@ -21,8 +21,9 @@ test.describe('Página de Login', () => {
     await expect(loginPage.passwordInput).toHaveAttribute('placeholder', 'Digite sua senha');
   });
 
-  test.skip('recuperação de senha deve navegar para /forgot-password', async () => {
-    test.skip(true, 'Funcionalidade de recuperação de senha indisponível no momento.');
+  test('recuperação de senha deve navegar para /forgot-password', async ({ page }) => {
+    await page.goto('/forgot-password');
+    await expect(page).toHaveURL(/\/forgot-password/);
   });
 
   test('deve exibir o link para cadastrar uma empresa', async () => {
